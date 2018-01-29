@@ -270,7 +270,9 @@ for ARCH in $ARCHES; do
             echo building gdb
             mkdir -p $GDBBUILDPATH
             pushd $GDBBUILDPATH
-            log ../gdb-$GDBVER/configure --target=$TARGET --prefix=$INSTALLPATH --disable-werror $EXTRA_TARGETS
+	    # latest GDB does not compile with guile 2.2 https://sourceware.org/bugzilla/show_bug.cgi?id=21104
+	    # hardcode dependency to guile-2.0
+            log ../gdb-$GDBVER/configure --target=$TARGET --prefix=$INSTALLPATH --disable-werror $EXTRA_TARGETS --with-guile=guile-2.0
             log $MAKE $PARALLEL
             log $MAKE install
             touch built.txt
